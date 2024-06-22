@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- <a href="{% url 'display' %}" class="btn btn-secondary"> display </a> -->
+
+
+    <style>
+
+        body::-webkit-scrollbar{
+          display: none;
+        }
+        
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 0.5rem 1rem;
+        }
+
+        
+        .search-form {
+            max-width: 600px;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+        }
+
+        main {
+            padding: 1rem;
+        }
+
+        .tab {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .tab button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            font-size: 1rem;
+            border-radius: 0;
+        }
+
+        .tab button.active {
+            background-color: #0056b3;
+        }
+
+        #course-list {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-behavior: smooth; /* Smooth scrolling behavior */
+            padding-bottom: 1rem;
+            padding-top: 1rem;
+            margin-bottom: -1rem; /* Offset padding to prevent scrollbar */
+        }
+
+        .course {
+            border: 1px solid #ccc;
+            margin-right: 1rem; /* Adjust margin between courses */
+            padding: 0;
+            background-color: #f9f9f9;
+            width: 300px; /* Fixed width for each course */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0; /* Prevent courses from shrinking */
+        }
+
+        .course-content {
+            padding: 1rem;
+        }
+
+        .course h2 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .course p {
+            margin-bottom: 0.5rem;
+        }
+
+        .course .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden; /* Ensure iframe doesn't overflow */
+        }
+
+        .course{
+          border-radius: 6px;
+          overflow: hidden;
+
+        }
+
+        .course .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Adjusted height for the iframe */
+        }
+
+        .course button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+            text-decoration: none;
+            margin-top: auto; /* Align button to the bottom */
+        }
+
+        .course:hover {
+            transform: scale(1.01);
+        }
+    
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.5);
+            border: none;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .arrow.prev {
+            left: 0;
+        }
+
+        .arrow.next {
+            right: 0;
+        }
+        #course-list::-webkit-scrollbar{
+          width: 0px;
+        }
+        
+        .domain{
+          background-color: transparent;
+          border: 0px solid transparent;
+          border-radius: 0px;
+          color : gray;
+          font-weight: bold;
+          height: 52px;
+          font-size: 18px;
+          padding : 10px;
+        
+        }
+        .domain:hover{
+          border-bottom: 3px solid black;
+          color: black;
+        }
+        .subdomain{
+          background-color: #e6e7e8;
+          border: 0px solid transparent;
+          border-radius: 22.5px;
+          color : #2d2f31;
+          text-align: center;
+          font-weight: bold;
+          height: 45px;
+          font-size: 18px;
+          padding : 10px;  
+          margin-right: 10px ;
+        }
+        .subdomain:hover{
+          background-color: #b6b9ba;
+        }
+        .container2::-webkit-scrollbar{
+          display: none;
+        }
+
+
+        footer {
+            background-color: #1d2225;
+            color: #fff;
+            padding: 2rem 0; /* Increased padding */
+            text-align: center;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-links {
+            margin-bottom: 20px; /* Increased margin */
+        }
+
+        .footer-links a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .show-footer {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+
+
+    </style>
+
+      
+      <div class="popup" style="height: 70vh; width : 70vw; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); background-color: red; z-index: 100; border-radius: 10px; visibility: hidden;">
+        
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/it1rTvBcfRg?si=C2yr2iE3fYAqY_MQ" frameborder="0" allowfullscreen style="border-radius: 10px"></iframe>
+        <button class="btn btn-secondary close" onclick="function2(this)">Close</button>
+
+      </div>
+      
+      
+
+      <a href='All' id="linkfirst" style="visibility: hidden;"></a>
+
+      <div class="overall" style="width: 89vw; height:70vh; padding-left: 7.5% ; overflow: hidden;">
+        <div class="container1" style="  height: 50px; width: 80vw; display: flex; align-items: center;  margin: 0px; padding: 0px; border-bottom: 2px solid lightgray; ">
+
+
+            <a id = 'linkall' class = "btn domain" href="ALL">ALL</a>
+            {% for domain in domains %}
+
+            <a id = 'link' href="{{domain}}" onclick="function1(this)" name = "{{domain}}" class = "btn domain" >{{domain}}</a>
+            
+            {% endfor %}
+        </div>
+            <br>
+
+        <div class="container2" style="  height: 50px; width: 80vw; display: flex; align-items: center;  margin: 0px; padding: 0px; overflow-x: auto; ">
+
+
+            <a id = 'link' class = "btn subdomain" style="padding-left: 20px; padding-right: 20px" href="ALL">ALL</a>            
+            {% for subdomain in subdomains %}
+
+            <a id='link' href="{{subdomain}}" name="{{subdomain}}" class = "btn subdomain" style="padding-left: 20px; padding-right: 20px" >{{subdomain}}</a>
+
+            {% endfor %}
+        </div>
+            <br>
+            
+            <!-- Youtube Course List -->
+
+            <div id="course-list">
+              {% for course in data %}
+                    <div class = 'course'>
+                      <div class="video-container">
+                            <iframe width="100%" height="200" src="https://www.youtube.com/embed/{{course.video}}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <div class="course-content">
+                            <h2>{{course.coursename}}</h2>
+                            <p>{{course.instructor}}</p>
+                            
+                            <a id = 'buttons2' class="btn btn-secondary btn-sm" >Watch Later</a>
+                            <a id = 'buttons3' class="btn btn-secondary btn-sm" style="margin-left: auto">Save</a>
+
+                      </div>
+                    </div>
+              {% endfor %}
+            </div>
+
+            
+        </div>
+      <br>
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="">Terms of Use</a>
+                <a href="">Privacy Policy</a>
+                <a href="">Cookie Policy</a>
+                <a href="">Sitemap</a>
+                <a href="">Contact Us</a>
+                <a href="">About Us</a>
+                <a href="">FAQs</a>
+                <a href="">Support</a>
+            </div>
+            <div>&copy; 2024 MOOC Courseware. All rights reserved.</div>
+        </div>
+    </footer>
+      </div>
+    <script type="text/javascript">
+      
+      let video = document.querySelector('.popup');
+      let button = document.querySelector('.close');
+      function function1(e){
+        video.style.visibility='visible';
+
+      }
+      function function2(e){
+        video.style.visibility='hidden';
+      }
+      
+      
+    </script>
+
+
+
+
+{% endblock%}

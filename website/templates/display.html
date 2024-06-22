@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% for record in records %}
+
+	{{record.domain}}
+	{{record.subdomain}}
+	{{record.video}}
+	<br>
+
+{% endfor %}
+
+{% endblock %}
